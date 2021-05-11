@@ -39,11 +39,10 @@ def auto_img_option(select_imgurl, name):
     name = name + str(random.randint(0,999999999))
     path = SAVE_PATH
     # mkdir(path)
-    # TODO
-    """ file_name = path + '\\' + name+".jpg"
+    file_name = path + '\\' + name+".jpg"
     f = open(file_name, 'wb')
     f.write(req.content)
-    f.close """
+    f.close
     return "/spider/"+name+".jpg"
 
 # imgurl = "http://www.tiyan.org.cn//public/upload/2021/04/23/7c16251a227b790d5c375b16b1615371.jpg"
