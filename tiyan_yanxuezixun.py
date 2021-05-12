@@ -28,16 +28,35 @@ def judgeStr(e):
     else:
         return False
 
+# export const setJsonArray = (data: any[], nodeKey: string = 'subMenu') => {
+#   let result: any[] = [];
+#   data.forEach(json => {
+#     if (json) {
+#       if (isNotEmpty(json[nodeKey])) {
+#         result = result.concat(setJsonArray(json[nodeKey]));
+#       }
+#       result.push(json);
+#     }
+#   });
+#   return result;
+# };
 
 def sectionReverse(contt):
-    if(len(contt.contents) == 0):
-        return ""
-    tagname = contt.contents[0].name
-    if(tagname == "section" or len(contt.contents) != 0 and judgeStr(contt.contents[0]) == False):
-        return sectionReverse(contt.contents[0])
-        # print(sectionReverse(contt.contents[0]))
-    else:
-        return contt
+    result = []
+    if(len(contt.contents) != 0):
+        for i in range(len(contt.contents)):
+            tagname = contt.contents[i].name
+            if(len(contt.contents) != 0 and judgeStr(contt.contents[i]) == False):
+                reveresu = sectionReverse(contt.contents[i])
+                result = result + reveresu
+            else:
+                result.append(contt)
+        """ tagname = contt.contents[0].name
+        if(tagname == "section" or len(contt.contents) != 0 and judgeStr(contt.contents[0]) == False):
+            return sectionReverse(contt.contents[0])
+        else:
+            return contt """
+    return result
 
 
 def requ(href):
@@ -52,30 +71,53 @@ def requ(href):
     constent_list = []
     for item in items.contents:
         content_obj = {}
-        if item == '\n' or item == ' ' or len(item.contents) == 0:
+        if item == '\n' or item == ' ' or item.name == 'h2' or item.name == 'div' or len(item.contents) == 0:
             continue
-        for i in item.contents:
-            if(isinstance(item.contents[0], str)):  # 判断类型
+        for i in range(len(item.contents)):
+            content_obj = {}
+            if(isinstance(item.contents[i], str)):  # 判断类型
                 continue
                 """ if(item.name =="h2" or item.attrs['class'][0]=="info2"):
                     continue
                 content_obj["type"] = item.name
-                content_obj['content'] = item.contents[0]
+                content_obj['content'] = item.contents[i]
                 constent_list.append(content_obj) """
             else:
-                tagname = item.contents[0].name
+                tagname = item.contents[i].name
                 if(tagname == "img"):
-                    content_obj["type"] = item.contents[0].name
-                    img_src_url = item.contents[0].attrs['src']
+                    content_obj["type"] = item.contents[i].name
+                    img_src_url = item.contents[i].attrs['src']
                     content_obj['content'] = auto_img.auto_img_option(img_src_url, "tiyan_cont_")
                     constent_list.append(content_obj)
-                if(tagname == "strong"):
-                    content_obj["type"] = item.contents[0].name
-                    content_obj['content'] = item.contents[0].contents[0]
-                    constent_list.append(content_obj)
-                if(tagname == "section"):
-                    reve = sectionReverse(item)
-                    if len(reve) > 0 and len(reve.contents) != 0:
+                """ if(tagname == "span"):
+                    content_obj["type"] = tagname
+                    print(item.contents[i].next)
+                    content_obj['content'] = item.contents[i].next
+                    constent_list.append(content_obj) """
+                """ if(tagname == "strong"):
+                    content_obj["type"] = item.contents[i].name
+                    content_obj['content'] = item.contents[i].contents[0]
+                    constent_list.append(content_obj) """
+                if(tagname == "section" or tagname == "strong" or tagname == "span"):
+                    reve = sectionReverse(item.contents[i])
+                    if((reve is not None) and (len(reve) > 0)):
+                        for index in range(len(reve)):
+                            content_obj = {}
+                            if((len(reve[index].contents) != 0)):
+                                if isinstance(reve[index].contents[0], str):  # section 来源
+                                    content_obj["type"] = reve[index].name
+                                    content_obj['content'] = reve[index].contents[0]
+                                    constent_list.append(content_obj)
+                                elif len(reve[index].contents[0].contents) == 0:
+                                    continue
+                                else:
+                                    cont= str(reve[index].contents[0].contents[0])
+                                    if("<" not in cont):
+                                        content_obj["type"] = reve[index].contents[0].name
+                                        content_obj['content'] = reve[index].contents[0].contents[0]
+                                        constent_list.append(content_obj)
+                    """ for i in range(len(reve)):
+                    if ((reve is not None) and (len(reve) > 0) and (len(reve.contents) != 0)):
                         if isinstance(reve.contents[0], str):  # section 来源
                             source = reve.contents[0]
                         elif len(reve.contents[0].contents) == 0:
@@ -83,7 +125,7 @@ def requ(href):
                         else:
                             content_obj["type"] = reve.contents[0].name
                             content_obj['content'] = reve.contents[0].contents[0]
-                            constent_list.append(content_obj)
+                            constent_list.append(content_obj) """
 
     return constent_list
 

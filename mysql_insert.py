@@ -13,6 +13,7 @@ def transformData(source_str):
     source_str = source_str.replace("}{", "},{")
     source_str = source_str.replace("'", '\"')
     source_str = '['+ source_str +']'
+    source_str = source_str.replace('\\u3000', '').replace('\\xa0', '')
     source_str = json.dumps(source_str, ensure_ascii=False)
     return source_str
 
@@ -127,4 +128,4 @@ def db_option():
     print('sql执行成功')
 
 
-# my_main_option()
+my_main_option()

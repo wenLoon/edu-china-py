@@ -71,7 +71,9 @@ def requ(href):
                     content_obj["type"] = item.contents[i].name
                     content_obj["href"] = item.contents[i].attrs["href"]
                     content_obj['content'] = item.contents[i].contents[0]
-                    constent_list.append(content_obj)
+                    cont= str(content_obj['content'])
+                    if("<" not in cont):
+                        constent_list.append(content_obj)
                 else:
                     if(tagname == 'div'):
                         for j in range(len(item.contents[i].contents)):
