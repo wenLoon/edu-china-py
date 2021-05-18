@@ -1,4 +1,16 @@
-aaa = '教育资讯|教育法修改,突出劳动教育、传统文化等内容;教育部公示'
-bbb = 'https://www.baidu.com'
+import schedule
+import time
 
-print("https" not in bbb)
+def job():
+    print("I'm working...")
+
+schedule.every().second.do(job)
+schedule.every(1).minutes.do(job)
+schedule.every().hour.do(job)
+schedule.every().day.at("10:30").do(job)
+schedule.every().monday.do(job)
+schedule.every().wednesday.at("13:15").do(job)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)

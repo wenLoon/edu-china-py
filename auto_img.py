@@ -3,7 +3,9 @@ import requests
 import random
 import os
 
-SAVE_PATH =r'D:\study\python\edu-china\img'
+# SAVE_PATH =r'D:\study\python\edu-china\img'
+SAVE_PATH =r'/data/application/cceu/spider/'
+# SAVE_PATH =r'/usr/local/application/cceu/python/edu-china/img/'
 
 def mkdir(path):
     # 去除首位空格
@@ -39,9 +41,10 @@ def auto_img_option(select_imgurl, name):
     name = name + str(random.randint(0,999999999))
     path = SAVE_PATH
     # mkdir(path)
-    file_name = path + '\\' + name+".jpg"
+    file_name = path + name+".jpg"
     f = open(file_name, 'wb')
     f.write(req.content)
+    print(name)
     f.close
     return "/spider/"+name+".jpg"
 

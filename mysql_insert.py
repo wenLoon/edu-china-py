@@ -1,4 +1,4 @@
-# import tiyan_yanxuezixun as tyyx
+import tiyan_yanxuezixun as tyyx
 import yxlx
 import szjyyjy_offical_account as szjy
 import pymysql
@@ -14,13 +14,14 @@ def transformData(source_str):
     source_str = source_str.replace("'", '\"')
     source_str = '['+ source_str +']'
     source_str = source_str.replace('\\u3000', '').replace('\\xa0', '')
+    source_str = source_str.replace('\\', '')
     source_str = json.dumps(source_str, ensure_ascii=False)
     return source_str
 
 def my_main_option():
     res = select_db()
     yxlx_option(res)
-    # tiyan_option(res) #暂时无法访问
+    tiyan_option(res)
     # szjyyjy_option(res)
     sougouwx_option(res)
     # 存入数据库
